@@ -11,10 +11,11 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("8a768256-7d8e-496f-bcd4-67b170f1d3e8")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("TmminAuth")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+01ea8d199ec6a5ce014769acdfe8995b099b7d8f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+09fe79288586a1262a144f5e96a67cdbd6b39ad4")]
 [assembly: System.Reflection.AssemblyProductAttribute("TmminAuth")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TmminAuth")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

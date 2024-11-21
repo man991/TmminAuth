@@ -1,6 +1,0 @@
-﻿namespace TmminAuth.Published
-{
-    public class intro
-    {
-    }
-}
