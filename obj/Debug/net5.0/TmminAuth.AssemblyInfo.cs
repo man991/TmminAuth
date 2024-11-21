@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TmminAuth")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5095f9ec69f9f97359261a3355b83dc77ac0a8e5")]
 [assembly: System.Reflection.AssemblyProductAttribute("TmminAuth")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TmminAuth")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
