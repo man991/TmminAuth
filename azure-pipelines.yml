@@ -16,8 +16,6 @@ jobs:
   displayName: 'Build, Save Docker Image, and Deploy to EC2'
   steps:
 
-    # Step 1: Checkout the source code
-    - task: Checkout@2
 
     # Step 2: Build the Docker image
     - task: Docker@2
