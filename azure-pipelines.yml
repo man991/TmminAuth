@@ -1,0 +1,49 @@
+trigger:
+- main  # Adjust to your branch name
+
+pool:
+  vmImage: 'ubuntu-latest'  # Use an Ubuntu-based agent
+
+variables:
+  dockerImageName: 'myapp'
+  sshHost: '54.255.179.58'  # The public IP of your EC2 instance
+  sshUser: 'ubuntu'  # EC2 username ('ec2-user' for Amazon Linux or 'ubuntu' for Ubuntu)
+  sshKey: $(sshKey)  # The private key stored in Azure DevOps pipeline variables
+  containerName: 'tmmin-auth-test'
+
+jobs:
+- job: BuildAndDeploy
+  displayName: 'Build, Save Docker Image, and Deploy to EC2'
+  steps:
+
+    # Step 1: Checkout the source code
+    - task: Checkout@2
+
+    # Step 2: Build the Docker image
+    - task: Docker@2
+      displayName: 'Build Docker Image'
+      inputs:
+        command: 'build'
+        Dockerfile: '**/Dockerfile'
+        tags: $(dockerImageName):$(Build.BuildId)
+
+    # Step 3: Save the Docker image as a tarball (Docker save)
+    - script: |
+        docker save -o $(dockerImageName)_$(Build.BuildId).tar $(dockerImageName):$(Build.BuildId)
+      displayName: 'Save Docker Image as Tarball'
+
+    # Step 4: Transfer the Docker image tarball to EC2 via SCP
+    - task: SCP@0
+      displayName: 'Transfer Docker Image to EC2'
+      inputs:
+        sshEndpoint: '54.255.179.58'  # The name of your SSH service connection
+        sourcePath: '$(dockerImageName)_$(Build.BuildId).tar'
+        targetPath: '/home/ec2-user/$(dockerImageName)_$(Build.BuildId).tar'  # Adjust path as needed
+
+    # Step 5: SSH into EC2 and load the Docker image
+    - task: SSH@0
+      displayName: 'Load Docker Image and Run Container on EC2'
+      inputs:
+        sshEndpoint: '54.255.179.58'
+        scriptPath: './deploytmminauthtest.sh'  # Path to your deployment script
+        failOnStandardError: true
