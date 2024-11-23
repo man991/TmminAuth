@@ -2,10 +2,10 @@ trigger:
 - main  # Adjust to your branch name
 
 pool:
-  vmImage: 'ubuntu-latest'  # Use an Ubuntu-based agent
+  vmImage: 'ubuntu-20.04'  # Use an Ubuntu-based agent
 
 variables:
-  dockerImageName: 'myapp'
+  dockerImageName: 'TmminDockerTest'
   sshHost: '54.255.179.58'  # The public IP of your EC2 instance
   sshUser: 'ubuntu'  # EC2 username ('ec2-user' for Amazon Linux or 'ubuntu' for Ubuntu)
   sshKey: $(sshKey)  # The private key stored in Azure DevOps pipeline variables
@@ -17,31 +17,33 @@ jobs:
   steps:
 
 
-    # Step 2: Build the Docker image
-    - task: Docker@2
-      displayName: 'Build Docker Image'
+    - task: SSH@0
       inputs:
-        command: 'build'
-        Dockerfile: '**/Dockerfile'
-        tags: $(dockerImageName):$(Build.BuildId)
+        sshEndpoint: 'Toms Dev AWS'
+        runOptions: 'inline'
+        inline: 'ls'
+        readyTimeout: '20000'
+      displayName: 'Login to aws server'
 
     # Step 3: Save the Docker image as a tarball (Docker save)
     - script: |
-        docker save -o $(dockerImageName)_$(Build.BuildId).tar $(dockerImageName):$(Build.BuildId)
-      displayName: 'Save Docker Image as Tarball'
+        cd testingdeploy
+        sudo docker build -t tom-web-pipe-demo .
+        sudo docker run -d -p 5008:80 --restart=always --name tom-pipe-container tom-web-pipe-demo
+      displayName: 'docker build and run'
 
     # Step 4: Transfer the Docker image tarball to EC2 via SCP
-    - task: SCP@0
-      displayName: 'Transfer Docker Image to EC2'
-      inputs:
-        sshEndpoint: '54.255.179.58'  # The name of your SSH service connection
-        sourcePath: '$(dockerImageName)_$(Build.BuildId).tar'
-        targetPath: '/home/ec2-user/$(dockerImageName)_$(Build.BuildId).tar'  # Adjust path as needed
+    # - task: SCP@0
+    #   displayName: 'Transfer Docker Image to EC2'
+    #   inputs:
+    #     sshEndpoint: 'Toms Dev AWS'  # The name of your SSH service connection
+    #     sourcePath: '$(dockerImageName)_$(Build.BuildId).tar'
+    #     targetPath: '/home/ubuntu/$(dockerImageName)_$(Build.BuildId).tar'  # Adjust path as needed
 
     # Step 5: SSH into EC2 and load the Docker image
-    - task: SSH@0
-      displayName: 'Load Docker Image and Run Container on EC2'
-      inputs:
-        sshEndpoint: '54.255.179.58'
-        scriptPath: './deploytmminauthtest.sh'  # Path to your deployment script
-        failOnStandardError: true
+    # - task: SSH@0
+    #   displayName: 'Load Docker Image and Run Container on EC2'
+    #   inputs:
+    #     sshEndpoint: 'Toms Dev AWS'
+    #     scriptPath: './deploytmminauthtest.sh'  # Path to your deployment script
+    #     failOnStandardError: true
