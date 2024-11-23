@@ -31,3 +31,4 @@ C:\Users\mb_developer\Documents\Toyota\TmminAuth\obj\Debug\net5.0\refint\TmminAu
 C:\Users\mb_developer\Documents\Toyota\TmminAuth\obj\Debug\net5.0\TmminAuth.pdb
 C:\Users\mb_developer\Documents\Toyota\TmminAuth\obj\Debug\net5.0\TmminAuth.genruntimeconfig.cache
 C:\Users\mb_developer\Documents\Toyota\TmminAuth\obj\Debug\net5.0\ref\TmminAuth.dll
+C:\Users\mb_developer\Documents\Toyota\TmminAuth\obj\Debug\net5.0\TmminAuth.sourcelink.json

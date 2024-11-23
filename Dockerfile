@@ -2,7 +2,7 @@
 
 FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
 WORKDIR /app
-EXPOSE 4000
+EXPOSE 5008
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 ARG BUILD_CONFIGURATION=Release
@@ -21,3 +21,24 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "TmminAuth.dll"]
+
+
+
+#--------------------------CONFIG DOCKER--------------------------------#
+#FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS build
+#WORKDIR /app
+#
+#COPY ["TmminAuth.csproj", "."]
+#RUN dotnet restore "./TmminAuth.csproj"
+#
+#COPY . .
+#
+#RUN dotnet publish -c Release -o out
+#
+#FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS runtime
+#WORKDIR /app
+#COPY --from=build /app/out ./
+#
+#EXPOSE 4000
+#
+#ENTRYPOINT ["dotnet", "TmminAuth.dll"]
