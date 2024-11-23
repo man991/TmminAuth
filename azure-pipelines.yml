@@ -2,10 +2,10 @@ trigger:
 - main  # Adjust to your branch name
 
 pool:
-  vmImage: 'ubuntu-latest'  # Use an Ubuntu-based agent
+  vmImage: 'ubuntu-20.04'  # Use an Ubuntu-based agent
 
 variables:
-  dockerImageName: 'myapp'
+  dockerImageName: 'TmminDockerTest'
   sshHost: '54.255.179.58'  # The public IP of your EC2 instance
   sshUser: 'ubuntu'  # EC2 username ('ec2-user' for Amazon Linux or 'ubuntu' for Ubuntu)
   sshKey: $(sshKey)  # The private key stored in Azure DevOps pipeline variables
@@ -34,14 +34,14 @@ jobs:
     - task: SCP@0
       displayName: 'Transfer Docker Image to EC2'
       inputs:
-        sshEndpoint: '54.255.179.58'  # The name of your SSH service connection
+        sshEndpoint: 'Toms Dev AWS'  # The name of your SSH service connection
         sourcePath: '$(dockerImageName)_$(Build.BuildId).tar'
-        targetPath: '/home/ec2-user/$(dockerImageName)_$(Build.BuildId).tar'  # Adjust path as needed
+        targetPath: '/home/ubuntu/$(dockerImageName)_$(Build.BuildId).tar'  # Adjust path as needed
 
     # Step 5: SSH into EC2 and load the Docker image
     - task: SSH@0
       displayName: 'Load Docker Image and Run Container on EC2'
       inputs:
-        sshEndpoint: '54.255.179.58'
+        sshEndpoint: 'Toms Dev AWS'
         scriptPath: './deploytmminauthtest.sh'  # Path to your deployment script
         failOnStandardError: true
